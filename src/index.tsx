@@ -7,8 +7,13 @@ if (!container) {
   throw new Error("Container not found");
 }
 const root = createRoot(container);
-root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+
+function render() {
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}
+
+render();

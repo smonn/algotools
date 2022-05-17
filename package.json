@@ -19,6 +19,7 @@
     "typescript": "4.6.4"
   },
   "dependencies": {
+    "@perawallet/connect": "0.0.8",
     "algosdk": "1.16.0",
     "react": "18.1.0",
     "react-dom": "18.1.0"

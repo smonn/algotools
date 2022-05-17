@@ -4,3 +4,15 @@ html {
   font-size: 125%;
   line-height: 1.5;
 }
+
+label {
+  display: block;
+}
+
+label > span {
+  display: block;
+}
+
+label + label {
+  margin-top: 1rem;
+}
