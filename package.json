@@ -22,6 +22,8 @@
     "@perawallet/connect": "0.0.8",
     "algosdk": "1.16.0",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "react-router-dom": "6.3.0",
+    "superstruct": "0.15.4"
   }
 }
