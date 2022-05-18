@@ -1,2 +1,3 @@
-export { SmartContractNew as NewSmartContract } from "./SmartContractNew";
+export { SmartContractNew } from "./SmartContractNew";
 export { SmartContractList } from "./SmartContractList";
+export { SmartContractCall } from "./SmartContractCall";

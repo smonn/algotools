@@ -7,6 +7,7 @@ export type IntegerInputProps = {
   onInteger?: (integer: number) => void;
   min?: number;
   max?: number;
+  helpText?: string | undefined;
 };
 
 export const IntegerInput: FC<IntegerInputProps> = ({
@@ -16,6 +17,7 @@ export const IntegerInput: FC<IntegerInputProps> = ({
   min,
   max,
   onInteger,
+  helpText,
 }) => {
   const id = useId();
 
@@ -40,6 +42,7 @@ export const IntegerInput: FC<IntegerInputProps> = ({
         name={name}
         onInput={onInput}
       />
+      {helpText ? <span className="help-text">{helpText}</span> : null}
       {error ? <span className="error">{error}</span> : null}
     </label>
   );

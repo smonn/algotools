@@ -1,7 +1,9 @@
 import type algosdk from "algosdk";
 import type {
+  ABIInterface,
   Algodv2,
   Indexer,
+  makeApplicationCallTxnFromObject,
   makeApplicationCreateTxnFromObject,
   makeApplicationDeleteTxnFromObject,
 } from "algosdk";
@@ -17,6 +19,10 @@ export type ApplicationCreateParams = Omit<
 >;
 export type ApplicationDeleteParams = Omit<
   Parameters<typeof makeApplicationDeleteTxnFromObject>[0],
+  "suggestedParams"
+>;
+export type ApplicationCallParams = Omit<
+  Parameters<typeof makeApplicationCallTxnFromObject>[0],
   "suggestedParams"
 >;
 
@@ -38,12 +44,21 @@ export class Algorand {
     return new Uint8Array(Buffer.from(compiledProgram.result, "base64"));
   }
 
+  async suggestedParams() {
+    return this.algod.getTransactionParams().do();
+  }
+
   async applications(accountAddress: string) {
     const result = await this.indexer
       .lookupAccountCreatedApplications(accountAddress)
       .do();
 
     return result["applications"];
+  }
+
+  async applicationInfo(appID: number) {
+    const result = await this.indexer.lookupApplications(appID).do();
+    return result["application"];
   }
 
   async applicationCreate(params: ApplicationCreateParams) {
@@ -56,14 +71,21 @@ export class Algorand {
     );
 
     return this.algosdk.makeApplicationCreateTxnFromObject({
-      suggestedParams: await this.algod.getTransactionParams().do(),
+      suggestedParams: await this.suggestedParams(),
       ...params,
     });
   }
 
   async applicationDelete(params: ApplicationDeleteParams) {
     return this.algosdk.makeApplicationDeleteTxnFromObject({
-      suggestedParams: await this.algod.getTransactionParams().do(),
+      suggestedParams: await this.suggestedParams(),
+      ...params,
+    });
+  }
+
+  async applicationCall(params: ApplicationCallParams) {
+    return this.algosdk.makeApplicationCallTxnFromObject({
+      suggestedParams: await this.suggestedParams(),
       ...params,
     });
   }
@@ -83,6 +105,20 @@ export class Algorand {
 
   applicationAddress(appID: number) {
     return this.algosdk.getApplicationAddress(appID);
+  }
+
+  makeABI(source: string) {
+    const abi = new this.algosdk.ABIInterface(JSON.parse(source));
+    return abi;
+  }
+
+  getMethod(abi: ABIInterface, methodName: string) {
+    for (const method of abi.methods) {
+      if (method.name === methodName) {
+        return method;
+      }
+    }
+    return undefined;
   }
 
   calculateAppCost(

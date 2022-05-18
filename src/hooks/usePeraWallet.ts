@@ -1,5 +1,6 @@
 import type { PeraWalletConnect } from "@perawallet/connect";
 import type { SignerTransaction } from "@perawallet/connect/dist/util/model/peraWalletModels";
+import type { TransactionSigner } from "algosdk";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { invariant } from "../utils/invariant";
 
@@ -43,6 +44,12 @@ export function usePeraWallet() {
     []
   );
 
+  const getSigner = useCallback((): TransactionSigner => {
+    return (txnGroup) => {
+      return signTransaction([txnGroup.map((txn) => ({ txn }))]);
+    };
+  }, [signTransaction]);
+
   useEffect(() => {
     (async () => {
       const peraWallet =
@@ -66,7 +73,8 @@ export function usePeraWallet() {
       connect,
       disconnect,
       signTransaction,
+      getSigner,
     }),
-    [connect, disconnect, accountAddress, signTransaction]
+    [connect, disconnect, getSigner, accountAddress, signTransaction]
   );
 }

@@ -1,4 +1,5 @@
 import { FC, useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAlgorand } from "../../hooks/useAlgorand";
 import { usePeraWallet } from "../../hooks/usePeraWallet";
 
@@ -52,6 +53,7 @@ export const SmartContractList: FC = () => {
           {apps.map((app) => (
             <li key={app["id"]}>
               {app["id"]}{" "}
+              <Link to={`/smart-contract/call/${app["id"]}`}>Call</Link>
               <button
                 disabled={state === "deleting"}
                 type="button"

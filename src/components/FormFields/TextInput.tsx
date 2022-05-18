@@ -1,50 +1,40 @@
 import { FC, FormEventHandler, useCallback, useId } from "react";
 
-export type FileInputProps = {
+export type TextInputProps = {
   label: string;
   name: string;
-  accept?: string;
-  error?: string;
-  multiple?: boolean;
-  onFiles?: (files: File[]) => void;
-  onFile?: (file: File | undefined) => void;
   helpText?: string | undefined;
+  error?: string;
+  onText?: (text: string) => void;
+  defaultValue?: string;
 };
 
-export const FileInput: FC<FileInputProps> = ({
+export const TextInput: FC<TextInputProps> = ({
   name,
   label,
-  accept,
   error,
-  multiple = false,
-  onFiles,
-  onFile,
+  defaultValue,
   helpText,
+  onText,
 }) => {
   const id = useId();
 
   const onInput = useCallback<FormEventHandler<HTMLInputElement>>(
     (event) => {
-      const files = event.currentTarget.files
-        ? [...event.currentTarget.files]
-        : [];
-
-      onFiles && onFiles(files);
-      onFile && onFile(files[0]);
+      onText && onText(event.currentTarget.value);
     },
-    [onFiles, onFile]
+    [onText]
   );
 
   return (
     <label htmlFor={id}>
       <span>{label}</span>
       <input
-        type="file"
+        type="text"
+        defaultValue={defaultValue}
         id={id}
         name={name}
-        accept={accept}
         onInput={onInput}
-        multiple={multiple}
       />
       {helpText ? <span className="help-text">{helpText}</span> : null}
       {error ? <span className="error">{error}</span> : null}
