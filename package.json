@@ -3,9 +3,8 @@
   "private": true,
   "source": "src/index.html",
   "scripts": {
-    "dev": "parcel serve",
-    "start": "parcel",
-    "build": "parcel build --dist-dir docs --public-url /algotools/"
+    "start": "parcel serve",
+    "build": "parcel build"
   },
   "devDependencies": {
     "@types/node": "17.0.34",
