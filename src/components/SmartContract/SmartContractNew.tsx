@@ -159,7 +159,14 @@ export const SmartContractNew: FC = () => {
       <h1>Deploy new smart contract</h1>
       <p>
         Deploys a smart contract. Once deployed, the app ID and address will be
-        displayed.
+        displayed. You can use max 64 key-pairs for global state and 16
+        key-pairs for local state. A key-pair is either a byte-slice or an
+        unsigned integer. In addition, you can add up to 3 2kB extra pages to
+        store larger smart contracts.
+      </p>
+      <p>
+        Not yet implemented: support for other app creation params such as
+        accounts, assets, args, etc.
       </p>
       {(state === "idle" || state === "error") && (
         <form onSubmit={onSubmit} noValidate>
